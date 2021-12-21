@@ -10,8 +10,13 @@
 library(shiny)
 library(shinythemes)
 library(spotifyr)
+library(tidyverse)
+library(DT)
+library(reshape2)
 library(plotly)
-library(dplyr)
+library(ggridges)
+library(httr)
+library(remotes)
 
 ## Authentification function
 authenticate <- function(id, secret) {
@@ -52,7 +57,51 @@ audio_features_fav_artist <- function(artist_name) {
 sentiment_datatable <- function(artist_name) {
   datatable(audio_features_fav_artist(artist_name)) %>% formatStyle(c('artist_name', 'track_name', 'album_name', 'danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'positivity', 'tempo') ,color = 'black')
 }
-# Define UI for application that draws a histogram
+
+# ## favorite tracks table function
+# fav_tracks <- function() {
+#     ceiling(get_my_top_artists_or_tracks(type = 'tracks', include_meta_info = TRUE)[['total']] / 50) %>%
+#         seq() %>%
+#         map(function(x) {
+#             get_my_top_artists_or_tracks(type = 'tracks', limit = 50, offset = (x - 1) * 50)
+#         }) %>% reduce(rbind)
+# }
+
+## favorite artists join from previous function
+# fav_tracks_artists <- function(prev) {
+#     temp <-
+#     prev %>%
+#         select(artists) %>%
+#         reduce(rbind) %>%
+#         reduce(rbind) %>%
+#         select(name)
+#     
+#     temp <-
+#     temp %>%
+#         select(name, album.name, popularity)
+#     
+#     prev <- temp %>%
+#         full_join(prev, by = 'id') # %>%
+#        # count(id, sort = TRUE) %>%
+#        # unique() %>%
+#        # select(-id) %>%
+#        # top_n(20, n)
+#     
+#     prev <- prev %>%
+#         full_join(temp, by = 'id') %>%
+#         select(name, name.x, album.name.y, popularity.y)
+#     
+#     return(prev)
+# }
+
+
+
+Sys.setenv(SPOTIFY_CLIENT_ID = "a9ddd67c426941c78b7744913d619b05")
+Sys.setenv(SPOTIFY_CLIENT_SECRET = "42e668de12ca4b1abd81cee80f060846")
+
+access_token <- get_spotify_access_token()
+
+# Define UI
 shinyUI(fluidPage(theme = shinytheme("cyborg"),
                   navbarPage(
                     # theme = "cerulean",  # <--- To use a theme, uncomment this
@@ -78,6 +127,8 @@ shinyUI(fluidPage(theme = shinytheme("cyborg"),
                                # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
                                # verbatimTextOutput("txtout"), # generated from the server
                              ) # mainPanel
+                             
+                             
                     ), # Navbar 2, tabPanel
                     tabPanel("Popularity",
                              mainPanel(
@@ -91,6 +142,8 @@ shinyUI(fluidPage(theme = shinytheme("cyborg"),
                                br(), br()
                                # DT::dataTableOutput("favorite_tracks_table"),
                              ), # mainPanel
+                             
+                             
                     ), # Navbar 3, tabPanel
                     tabPanel("Sentiment",
                              # absolutePanel(
@@ -129,8 +182,27 @@ shinyUI(fluidPage(theme = shinytheme("cyborg"),
                                numericInput("most", "", 1),
                                h6("Use the dialog box above to see other songs and their scores!"),
                                
+                               # h6("The lowest scoring song for this category is:"),
+                               # tags$style("#least_sentiment
+                               #    {font-size: 20px;
+                               #    color: Chartreuse;
+                               #    display: block;
+                               #    text-align: right;
+                               #    padding-bottom: 10px}"),
+                               # textOutput("least_sentiment"),
+                               
+                               # h3("Positivity (Valence)"),
+                               # plotOutput(outputId = "valence_plot_output"),
+                               # h5("The most positive song by this artist is:"),
+                               # textOutput("most_positive"),
+                               # h5("The least positive song by this artist is:"),
+                               # textOutput("least_positive"),
+                               # DT::dataTableOutput("sentiment_table"),
+                               
                                br(), br()
                              ), # mainPanel
+                             
+                             
                     ), # Navbar 4, tabPanel
                     tabPanel("User Stats",
                              mainPanel(
@@ -165,7 +237,5 @@ shinyUI(fluidPage(theme = shinytheme("cyborg"),
                     ) 
                     
                   ) # navbarPage
+) # fluidPage
 )
-)# fluidPage
-
-
