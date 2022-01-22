@@ -96,30 +96,22 @@ access_token <- get_spotify_access_token()
 shinyUI(fluidPage(theme = shinytheme("superhero"),
                   sidebarLayout(
                     sidebarPanel(
-                      "Intro",
-                         tags$h3("Input:"),
-                         textInput("id", "Client ID: ", ""), # txt1 sent to the server
-                         textInput("secret", "Client Secret: ", ""),    # txt2 sent to the server
-                         actionButton("btn", "validate"),
-                         textOutput("validate_message"),
-                         h1("Welcome to the Spotify User Analysis tool!"),
-                         h6("Here you can see different analyses on your own music, as well as artists you follow, and what type of music you are interested in. Here are a couple first steps:"),
-                         br(),
-                         h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
-                         h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
-                         h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
-                         h6("Step 4: Allow spotify to authenticate your account"),
-                         h6("Now you should be good to go! Click one of the tabs above and learn more about your music"),
-                         # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
-                         # verbatimTextOutput("txtout"), # generated from the server
-                       
-                       
-                       
+                      "",
+                      h1("Spotify Music Sentiment Analyzer"),
+                      tags$h3("API authentification"),
+                      textInput("id", "Client ID: ", ""), # txt1 sent to the server
+                      textInput("secret", "Client Secret: ", ""),    # txt2 sent to the server
+                      h6("Refer to instruction tab on how to get client ID and Client secret."),
+                      actionButton("btn", "See my music sentiment"),
+                      textOutput("validate_message"),
+                      #h1("Welcome to the Spotify User Analysis tool!"),
+                      #h6("Here you can see different analyses on your own music, as well as artists you follow, and what type of music you are interested in. Here are a couple first steps:"),
+                      br(),
                       ),
                     mainPanel(
                       navbarPage(
                         #theme = "cerulean",  # <--- To use a theme, uncomment this
-                        "Spotify User Analysis",
+                        "Sentiment Analysis",
                         # Navbar 2, tabPanel
                         #tabPanel("Popularity",
                         #         mainPanel(
@@ -131,15 +123,15 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                         #           h4("Some more insight on your top artists:"),
                         #           DT::dataTableOutput("favorite_artists_table"),
                         #           br(), br()
-                                   # DT::dataTableOutput("favorite_tracks_table"),
+                        # DT::dataTableOutput("favorite_tracks_table"),
                         #         ), # mainPanel
-                                 
-                                 
+                        
+                        
                         #), # Navbar 3, tabPanel
-                        tabPanel( "Sentiment Analaysis",
+                        tabPanel( "Sentiment Analysis",
                                   tabsetPanel(
                                     tabPanel(
-                                      "Sentiment",
+                                      "Sentiment for specific artist",
                                       # absolutePanel(
                                       #     selectInput("artist_name", "Choose one of your top artists: ", fav_artists()$name)
                                       # ), # sidebarPanel
@@ -194,47 +186,59 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                                         # DT::dataTableOutput("sentiment_table"),
                                         
                                         br(), br()
-                                  
-                          
-                        
-                      )
-                    ), # 1st Sentiment analyzer tab "sentiment"
-                    # tabset1 in Sentiment Analyzer
-                    tabPanel("User Stats",
-                             mainPanel(
-                               h4("Let's take a look at type of music you listen to overall, based on your top artists"),
-                               tags$style(
-                                 "p { 
+                                        
+                                        
+                                        
+                                      )
+                                    ), # 1st Sentiment analyzer tab "sentiment"
+                                    # tabset1 in Sentiment Analyzer
+                                    tabPanel("User's overall sentiment",
+                                             mainPanel(
+                                               h4("Let's take a look at type of music you listen to overall, based on your top artists"),
+                                               tags$style(
+                                                 "p { 
                                       color: red;
                                      }"
-                               ),
-                               p("Be patient, this could take a minute or two"),
-                               h3("Positivity vs Energy"),
-                               plotOutput("energy_vs_positivity_plot_output"),
-                               tags$style("#energy_vs_positivity
+                                               ),
+                                               p("Be patient, this could take a minute or two"),
+                                               h3("Positivity vs Energy"),
+                                               plotOutput("energy_vs_positivity_plot_output"),
+                                               tags$style("#energy_vs_positivity
                                     {font-size: 40px;
                                     color: Yellow;
                                     display: block;
                                     text-align: center;
                                     padding-top: 25px;
                                     padding-bottom: 10px}"),
-                               textOutput("energy_vs_positivity"),
-                               h3("Speechiness vs Danceability"),
-                               plotOutput("speechiness_vs_danceability_plot_output"),
-                               tags$style("#speechiness_vs_danceability
+                                               textOutput("energy_vs_positivity"),
+                                               h3("Speechiness vs Danceability"),
+                                               plotOutput("speechiness_vs_danceability_plot_output"),
+                                               tags$style("#speechiness_vs_danceability
                                     {font-size: 40px;
                                     color: Yellow;
                                     display: block;
                                     text-align: center;
                                     padding-top: 25px;
                                     padding-bottom: 10px}"), 
-                               textOutput("speechiness_vs_danceability")
-                             ) 
-                    )
-                    )
-                  
-)  # "Sentiment Analaysis" main navbar tab
-)
+                                               textOutput("speechiness_vs_danceability")
+                                             ) 
+                                    )
+                                  )
+                                  
+                        ),  # "Sentiment Analaysis" main navbar tab
+                        tabPanel(
+                          "Instruction",
+                          mainPanel(
+                            h3("1) Log in to https://developer.spotify.com/dashboard/ with your Spotify"),
+                            h3("2) Click on Dashboard tab, and click \"Create an app\""),
+                            h3("3) After done creating an app, locate the ID and Secret"),
+                            tags$head(tags$style('h5 {color:teal;}')),
+                            h5("*Spotify might take a while to authenticate your ID")
+                            # h3("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
+                            # verbatimTextOutput("txtout"), # generated from the server
+                          )
+                        )
+                      ) # navbar page
 )
 )
 )
