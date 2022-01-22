@@ -7,8 +7,8 @@ library(lubridate)
 
 ### Step 0: API authentification
 
-id = "4a9ddd67c426941c78b7744913d619b05"
-secret = "42e668de12ca4b1abd81cee80f060846"
+id = "2e89d8694949409fa434782aa42c2bf0"
+secret = "1c8d2c1aa00144bca1e21741732409c6"
 
 Sys.setenv(SPOTIFY_CLIENT_ID = id)
 Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
