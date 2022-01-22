@@ -121,7 +121,7 @@ shinyServer(function(input, output, session) {
   output$sentiment_plot_output <- renderPlot({ 
     text1 <- text
     text <- casefold(input$sentiment_type, upper = FALSE)
-    data <- sentiment_data() %>% arrange(desc(.data[[text]]))
+    data <- sentiment_data() %>% arrange(desc(.data[[text]])) ##arrange in descending order
     ggplot(data = data, aes(x = .data[[text]], y = fct_rev(album_name), fill = stat(x))) + 
       geom_density_ridges_gradient(scale = 2, quantile_lines=TRUE, quantiles = 2) +
       scale_fill_viridis_c(name = text, option = "D") + 
@@ -136,11 +136,11 @@ shinyServer(function(input, output, session) {
     paste(paste(data$track_name[input$most], " with a score of ", sep=""), data[[text]][input$most], sep="")
   })
   
-  # output$least_sentiment <- renderText({
-  #     text <- casefold(input$sentiment_type, upper = FALSE)
-  #     data <- sentiment_data() %>% arrange(.data[[text]])
-  #     paste(paste(data$track_name[1], " with a score of ", sep=""), data[[text]][1], sep="")
-  # })
+  output$least_sentiment <- renderText({
+      text <- casefold(input$sentiment_type, upper = FALSE)
+      data <- sentiment_data() %>% arrange(.data[[text]])
+      paste(paste(data$track_name[1], " with a score of ", sep=""), data[[text]][1], sep="")
+  })
   
   # TABPANEL #3
   ## hella important, basically a global variable lowkey
