@@ -123,7 +123,7 @@ shinyServer(function(input, output, session) {
     text <- casefold(input$sentiment_type, upper = FALSE)
     data <- sentiment_data() %>% arrange(desc(.data[[text]])) ##arrange in descending order
     ggplot(data = data, aes(x = .data[[text]], y = fct_rev(album_name), fill = stat(x))) + 
-      geom_density_ridges_gradient(scale = 2, quantile_lines=TRUE, quantiles = 2) +
+      geom_density_ridges_gradient(scale = 3, quantile_lines=FALSE, quantiles = 2) +
       scale_fill_viridis_c(name = text, option = "D") + 
       theme_ridges(font_size = 12, center_axis_labels = TRUE) + 
       scale_x_continuous(expand = c(0.01, 0)) + 
@@ -182,13 +182,13 @@ shinyServer(function(input, output, session) {
     temp1 <- top_artist_sentiment_data()
     temp <- cbind(temp1$energy, temp1$positivity) 
     if(mean(temp[,1], na.rm = TRUE) < 0.500 & mean(temp[,2], na.rm = TRUE) < 0.500) {
-      "You seem to enjoy sad music :,("
+      "Sad music is what you enjoy :D"
     } else if (mean(temp[,1], na.rm = TRUE) < 0.500 & mean(temp[,2], na.rm = TRUE) > 0.500) {
-      "You seem to enjoy chill music :)"
+      "Chill and Relaxing music is what you enjoy :D"
     } else if (mean(temp[,1], na.rm = TRUE) > 0.500 & mean(temp[,2], na.rm = TRUE) < 0.500) {
-      "You seem to enjoy aggressive music :("
+      "Aggresive music is what you enjoy :D"
     } else {
-      "You seem to enjoy joyful music :D"
+      "Joyful and Cheerful music is what you enjoy :D"
     }
   })
   
