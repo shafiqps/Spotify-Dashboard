@@ -123,8 +123,8 @@ shinyServer(function(input, output, session) {
     text <- casefold(input$sentiment_type, upper = FALSE)
     data <- sentiment_data() %>% arrange(desc(.data[[text]])) ##arrange in descending order
     ggplot(data = data, aes(x = .data[[text]], y = fct_rev(album_name), fill = stat(x))) + 
-      geom_density_ridges_gradient(scale = 3, quantile_lines=FALSE, quantiles = 2) +
-      scale_fill_viridis_c(name = text, option = "D") + 
+      geom_density_ridges_gradient(scale = 2, quantile_lines=FALSE) +
+      scale_fill_viridis_c(name = text, option = "C") + 
       theme_ridges(font_size = 12, center_axis_labels = TRUE) + 
       scale_x_continuous(expand = c(0.01, 0)) + 
       labs(y ="Album", x = .data[[text]])
@@ -166,6 +166,7 @@ shinyServer(function(input, output, session) {
     # PLOT EMOTIONAL QUADRANT TOP FOUR ARTISTS
     ggplot(data = top_artist_sentiment_data(), aes(x = positivity, y = energy, color = artist_name)) +
       geom_jitter() +
+      scale_color_viridis_d() +
       geom_vline(xintercept = 0.5) +
       geom_hline(yintercept = 0.5) +
       scale_x_continuous(limits = c(0, 1)) +
@@ -175,7 +176,8 @@ shinyServer(function(input, output, session) {
       annotate('text', 1.75 / 2, 0, label = "Chill") +
       annotate('text', 0.25 / 2, 0, label = "Sad") +
       labs(x= "Positivity", y= "Energy") +
-      ggtitle("Emotional quadrant for Top 10 Artists")
+      ggtitle("Emotional quadrant for Top 10 Artists") +
+      theme_light()
   })
   
   output$energy_vs_positivity <- renderText({
@@ -196,6 +198,7 @@ shinyServer(function(input, output, session) {
     # PLOT EMOTIONAL QUADRANT TOP FOUR ARTISTS
     ggplot(data = top_artist_sentiment_data(), aes(x = acousticness, y = danceability, color = artist_name)) +
       geom_jitter() +
+      scale_color_viridis_d() +
       geom_vline(xintercept = 0.5) +
       geom_hline(yintercept = 0.5) +
       scale_x_continuous(limits = c(0, 1)) +
@@ -205,7 +208,8 @@ shinyServer(function(input, output, session) {
       annotate('text', 1.75 / 2, 0, label = "Lyrical Rap") +
       annotate('text', 0.25 / 2, 0, label = "Smooth Instrument-Based") +
       labs(x= "acousticness", y= "danceability") +
-      ggtitle("Music Genre for Top 10 Artists")
+      ggtitle("Music Genre for Top 10 Artists") +
+      theme_light()
   })
   
   output$speechiness_vs_danceability <- renderText({
