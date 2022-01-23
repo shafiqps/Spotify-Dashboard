@@ -200,12 +200,12 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                                       color: red;
                                      }"
                                                ),
-                                               p("Be patient, this could take a minute or two"),
+                                               p("This might take a second.."),
                                                h3("Positivity vs Energy"),
                                                plotOutput("energy_vs_positivity_plot_output"),
                                                tags$style("#energy_vs_positivity
                                     {font-size: 40px;
-                                    color: Yellow;
+                                    color: Green;
                                     display: block;
                                     text-align: center;
                                     padding-top: 25px;
@@ -215,7 +215,7 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                                                plotOutput("speechiness_vs_danceability_plot_output"),
                                                tags$style("#speechiness_vs_danceability
                                     {font-size: 40px;
-                                    color: Yellow;
+                                    color: Green;
                                     display: block;
                                     text-align: center;
                                     padding-top: 25px;
