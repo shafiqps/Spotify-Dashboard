@@ -38,6 +38,11 @@ sentiment_datatable <- function(artist_name) {
   datatable(audio_features_fav_artist(artist_name)) %>% formatStyle(c('artist_name', 'track_name', 'album_name', 'danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'positivity', 'tempo') ,color = 'black')
 }
 
+song_sentiment_datatable <- function(artist_name) {
+  datatable(audio_features_fav_artist(artist_name)) %>% formatStyle(c('artist_name', 'track_name', 'album_name', 'danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'positivity', 'tempo') ,color = 'black')
+}
+
+
 # ## favorite tracks table function
 # fav_tracks <- function() {
 #     ceiling(get_my_top_artists_or_tracks(type = 'tracks', include_meta_info = TRUE)[['total']] / 50) %>%
@@ -123,12 +128,13 @@ shinyServer(function(input, output, session) {
     text <- casefold(input$sentiment_type, upper = FALSE)
     data <- sentiment_data() %>% arrange(desc(.data[[text]])) ##arrange in descending order
     ggplot(data = data, aes(x = .data[[text]], y = fct_rev(album_name), fill = stat(x))) + 
-      geom_density_ridges_gradient(scale = 2, quantile_lines=FALSE) +
+      geom_density_ridges_gradient(stat = "binline", bins = 20, scale = 2) +
       scale_fill_viridis_c(name = text, option = "C") + 
       theme_ridges(font_size = 12, center_axis_labels = TRUE) + 
       scale_x_continuous(expand = c(0.01, 0)) + 
       labs(y ="Album", x = .data[[text]])
   })
+
   
   output$most_sentiment <- renderText({
     text <- casefold(input$sentiment_type, upper = FALSE)
@@ -137,9 +143,9 @@ shinyServer(function(input, output, session) {
   })
   
   output$least_sentiment <- renderText({
-      text <- casefold(input$sentiment_type, upper = FALSE)
-      data <- sentiment_data() %>% arrange(.data[[text]])
-      paste(paste(data$track_name[1], " with a score of ", sep=""), data[[text]][1], sep="")
+    text <- casefold(input$sentiment_type, upper = FALSE)
+    data <- sentiment_data() %>% arrange(.data[[text]])
+    paste(paste(data$track_name[1], " with a score of ", sep=""), data[[text]][1], sep="")
   })
   
   # TABPANEL #3
@@ -148,7 +154,7 @@ shinyServer(function(input, output, session) {
     names <- rev(popularity_data()$name)
     top_artist_sentiment <- as.data.frame(audio_features_fav_artist(names[1]))
     # 2:length(names) for all artists 
-    for (i in 2:10) { 
+    for (i in 2:20) { 
       tryCatch(
         expr = {
           top_artist_sentiment <- rbind(top_artist_sentiment, as.data.frame(audio_features_fav_artist(names[i])))
@@ -197,7 +203,7 @@ shinyServer(function(input, output, session) {
   output$speechiness_vs_danceability_plot_output <- renderPlot({
     # PLOT EMOTIONAL QUADRANT TOP FOUR ARTISTS
     ggplot(data = top_artist_sentiment_data(), aes(x = acousticness, y = danceability, color = artist_name)) +
-      geom_jitter() +
+      geom_point() +
       scale_color_viridis_d() +
       geom_vline(xintercept = 0.5) +
       geom_hline(yintercept = 0.5) +

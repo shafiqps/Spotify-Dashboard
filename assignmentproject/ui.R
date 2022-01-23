@@ -8,6 +8,7 @@ library(plotly)
 library(ggridges)
 library(httr)
 library(remotes)
+library(dplyr)
 
 ## Authentification function
 authenticate <- function(id, secret) {
@@ -43,6 +44,15 @@ audio_features_fav_artist <- function(artist_name) {
     select(.data$artist_name, .data$track_name, .data$album_name, .data$danceability, .data$energy, .data$loudness, .data$speechiness, .data$acousticness, .data$liveness, .data$positivity, .data$tempo) %>% 
     distinct(.data$track_name, .keep_all= TRUE)
 }
+
+song_sentiment_data <- function(){
+  as.data.frame(get_artist_audio_features(artist = artist_name, return_closest_artist = TRUE) %>% 
+                  rename(positivity = valence) %>% 
+                  select(.data$danceability, .data$energy, .data$loudness, .data$speechiness, .data$acousticness, .data$liveness, .data$positivity, .data$tempo) %>% 
+                  distinct(.data$track_name, .keep_all= TRUE)
+                )
+}
+
 
 ## datatablify audio_features
 sentiment_datatable <- function(artist_name) {
@@ -107,7 +117,7 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                       #h1("Welcome to the Spotify User Analysis tool!"),
                       #h6("Here you can see different analyses on your own music, as well as artists you follow, and what type of music you are interested in. Here are a couple first steps:"),
                       br(),
-                      ),
+                    ),
                     mainPanel(
                       navbarPage(
                         #theme = "cerulean",  # <--- To use a theme, uncomment this
@@ -128,7 +138,7 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                         
                         
                         #), # Navbar 3, tabPanel
-                        tabPanel( "Sentiment Analysis",
+                        tabPanel( "by the ListenRs",
                                   tabsetPanel(
                                     tabPanel(
                                       "Sentiment for specific artist",
@@ -176,6 +186,7 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                                        text-align: left;
                                        padding-bottom: 10px}"),
                                         textOutput("least_sentiment"),
+                                        
                                         
                                         # h3("Positivity (Valence)"),
                                         # plotOutput(outputId = "valence_plot_output"),
@@ -239,7 +250,7 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                           )
                         )
                       ) # navbar page
-)
-)
+                    )
+                  )
 )
 )
