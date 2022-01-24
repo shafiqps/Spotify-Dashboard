@@ -93,31 +93,30 @@ shinyServer(function(input, output, session) {
   # TABPANEL #2
   popularity_data <- reactive({ fav_artists() })
   
-  output$popularity_plot_output <- renderPlot({
-    data <- popularity_data()
-    ggplot(data=data, aes(x=reorder(name, -popularity), y=popularity)) +
-      geom_bar(stat="identity", width = .5, fill = "#1F51FF") +
-      theme(text = element_text(size=15),
-            axis.text.x = element_text(angle = 90)) + 
-      xlab("Artist Name") + ylab("Popularity Score")
-  })
+#  output$popularity_plot_output <- renderPlot({
+#    data <- popularity_data()
+#    ggplot(data=data, aes(x=reorder(name, -popularity), y=popularity)) +
+#      geom_bar(stat="identity", width = .5, fill = "#1F51FF") +
+#      theme(text = element_text(size=15),
+#            axis.text.x = element_text(angle = 90)) + 
+#      xlab("Artist Name") + ylab("Popularity Score")
+#  })
   
-  output$follower_plot_output <- renderPlotly({
-    data <- popularity_data()
-    data$follow_percent <- data$followers / sum(data$followers)
+#  output$follower_plot_output <- renderPlotly({
+#    data <- popularity_data()
+#    data$follow_percent <- data$followers / sum(data$followers)
     # ggplot(data=data, aes(x="", y=follow_percent, fill=name)) + 
     #     geom_bar(width = 1, stat = "identity") + 
     #     coord_polar("y", start=0)
-    plot_ly(data=data, labels = ~name, values = ~follow_percent, type = 'pie', textposition = 'inside', textinfo = 'label+percent', width = 550, height = 550) %>%
-      layout(autosize = T,
-             xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-  })
+#    plot_ly(data=data, labels = ~name, values = ~follow_percent, type = 'pie', textposition = 'inside', textinfo = 'label+percent', width = 550, height = 550) %>%
+#      layout(autosize = T,
+#             xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+#             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+#  })
   
   output$favorite_artists_table <- DT::renderDataTable({ fav_artists_datatable() }) %>% bindEvent(validate)
   
-  # TABPANEL #3
-  ## hella important, basically a global variable lowkey
+  # Tab "Sentiment for Specific Artist"
   sentiment_data <- reactive({ audio_features_fav_artist(as.character(input$artist_name)) })
   sentiment_datatable_reactive <- reactive({ sentiment_datatable(input$artist_name) })
   
@@ -135,11 +134,11 @@ shinyServer(function(input, output, session) {
       labs(y ="Album", x = .data[[text]])
   })
 
-  
+  ## Tab "User's Overall Sentiment
   output$most_sentiment <- renderText({
     text <- casefold(input$sentiment_type, upper = FALSE)
     data <- sentiment_data() %>% arrange(desc(.data[[text]]))
-    paste(paste(data$track_name[input$most], " with a score of ", sep=""), data[[text]][input$most], sep="")
+    paste(paste(data$track_name[1], " with a score of ", sep=""), data[[text]][1], sep="")
   })
   
   output$least_sentiment <- renderText({
@@ -154,7 +153,7 @@ shinyServer(function(input, output, session) {
     names <- rev(popularity_data()$name)
     top_artist_sentiment <- as.data.frame(audio_features_fav_artist(names[1]))
     # 2:length(names) for all artists 
-    for (i in 2:20) { 
+    for (i in 2:10) { 
       tryCatch(
         expr = {
           top_artist_sentiment <- rbind(top_artist_sentiment, as.data.frame(audio_features_fav_artist(names[i])))
@@ -168,11 +167,43 @@ shinyServer(function(input, output, session) {
     return (top_artist_sentiment)
   })
   
+  output$energy_bar_output <- renderPlot({
+    ggplot(data = top_artist_sentiment_data(), aes(x = artist_name, y = energy)) +
+      geom_bar(width = 1, stat="identity",aes(fill = as.factor(artist_name))) + 
+      scale_fill_brewer("Artists", palette = "Spectral")+
+      coord_polar() + 
+      theme(
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank()
+      ) +
+      labs(
+        title = "Energy sentiment for your top artists"
+      ) + 
+      theme(plot.title = element_text(face = "bold", size = 25, hjust = 0.5))
+  })
+  
+  output$positivity_bar_output <- renderPlot({
+    ggplot(data = top_artist_sentiment_data(), aes(x = artist_name, y = positivity)) +
+      geom_bar(width = 1, stat="identity",aes(fill = as.factor(artist_name))) + 
+      scale_fill_brewer("Artists", palette = "Spectral")+
+      coord_polar() + 
+      theme(
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank()
+      ) +
+      labs(
+        title = "Positivity sentiment for your top artists"
+      )+ 
+      theme(plot.title = element_text(face = "bold", size = 25, hjust = 0.5))
+  })
+  
   output$energy_vs_positivity_plot_output <- renderPlot({
     # PLOT EMOTIONAL QUADRANT TOP FOUR ARTISTS
-    ggplot(data = top_artist_sentiment_data(), aes(x = positivity, y = energy, color = artist_name)) +
-      geom_jitter() +
-      scale_color_viridis_d() +
+    ggplot(data = top_artist_sentiment_data(), aes(x = positivity, y = energy, size = artist_name)) +
+      geom_point(alpha=0.7,color='firebrick') + 
+      scale_color_viridis_d("Artists") +
       geom_vline(xintercept = 0.5) +
       geom_hline(yintercept = 0.5) +
       scale_x_continuous(limits = c(0, 1)) +
@@ -181,57 +212,60 @@ shinyServer(function(input, output, session) {
       annotate('text', 1.75 / 2, 1, label = "Joyful") +
       annotate('text', 1.75 / 2, 0, label = "Chill") +
       annotate('text', 0.25 / 2, 0, label = "Sad") +
-      labs(x= "Positivity", y= "Energy") +
-      ggtitle("Emotional quadrant for Top 10 Artists") +
-      theme_light()
+      labs(title = "Energy vs Positivity" ,x= "Positivity", y= "Energy") +
+      theme_light() + 
+      theme(plot.title = element_text(face = "bold", size = 25, hjust = 0.5)) +
+      theme(legend.position = "none")
   })
   
   output$energy_vs_positivity <- renderText({
     temp1 <- top_artist_sentiment_data()
     temp <- cbind(temp1$energy, temp1$positivity) 
     if(mean(temp[,1], na.rm = TRUE) < 0.500 & mean(temp[,2], na.rm = TRUE) < 0.500) {
-      "Sad music is what you enjoy :D"
+      "You are an emotional and sensitive person. Music helps you sort your feelings."
     } else if (mean(temp[,1], na.rm = TRUE) < 0.500 & mean(temp[,2], na.rm = TRUE) > 0.500) {
-      "Chill and Relaxing music is what you enjoy :D"
+      "You are an easy-going person, or at least music helps you relax and de-stress."
     } else if (mean(temp[,1], na.rm = TRUE) > 0.500 & mean(temp[,2], na.rm = TRUE) < 0.500) {
-      "Aggresive music is what you enjoy :D"
+      "You vent your feelings through loud and powerful music. It makes you feel empowered."
     } else {
-      "Joyful and Cheerful music is what you enjoy :D"
+      "You are a happy-go-lucky person!! People often looks at you and think about how kind you are."
     }
   })
   
-  output$speechiness_vs_danceability_plot_output <- renderPlot({
-    # PLOT EMOTIONAL QUADRANT TOP FOUR ARTISTS
-    ggplot(data = top_artist_sentiment_data(), aes(x = acousticness, y = danceability, color = artist_name)) +
-      geom_point() +
-      scale_color_viridis_d() +
-      geom_vline(xintercept = 0.5) +
-      geom_hline(yintercept = 0.5) +
-      scale_x_continuous(limits = c(0, 1)) +
-      scale_y_continuous(limits = c(0, 1)) +
-      annotate('text', 0.25 / 2, 1, label = "Hip-Hop/Club") +
-      annotate('text', 1.75 / 2, 1, label = "Rock/Metal") +
-      annotate('text', 1.75 / 2, 0, label = "Lyrical Rap") +
-      annotate('text', 0.25 / 2, 0, label = "Smooth Instrument-Based") +
-      labs(x= "acousticness", y= "danceability") +
-      ggtitle("Music Genre for Top 10 Artists") +
-      theme_light()
-  })
-  
-  output$speechiness_vs_danceability <- renderText({
-    temp1 <- top_artist_sentiment_data()
-    temp <- cbind(temp1$acousticness, temp1$danceability) 
-    if(mean(temp[,1], na.rm = TRUE) < 0.500 & mean(temp[,2], na.rm = TRUE) < 0.500) {
-      "You seem to enjoy more singing-type music such as jazz or classical, not upbeat"
-    } else if (mean(temp[,1], na.rm = TRUE) > 0.500 & mean(temp[,2], na.rm = TRUE) < 0.500) {
-      "You seem to enjoy faster, more wordy music such as rap music or spoken word music with minimal instruments"
-    } else if (mean(temp[,1], na.rm = TRUE) < 0.500 & mean(temp[,2], na.rm = TRUE) > 0.500) {
-      "You seem to enjoy music you can vibe to, with an upbeat temp and more singing"
-    } else {
-      "You seem to enjoy faster-paced Rap music or very lyrical rock music"
-    }
-  })
-  
+#  output$speechiness_vs_danceability_plot_output <- renderPlot({
+#    # PLOT EMOTIONAL QUADRANT TOP FOUR ARTISTS
+#    ggplot(data = top_artist_sentiment_data(), aes(x = acousticness, y = danceability, color = artist_name)) +
+#      geom_point() +
+#      scale_color_viridis_d() +
+#      geom_vline(xintercept = 0.5) +
+#      geom_hline(yintercept = 0.5) +
+#      scale_x_continuous(limits = c(0, 1)) +
+#      scale_y_continuous(limits = c(0, 1)) +
+#      annotate('text', 0.25 / 2, 1, label = "Hip-Hop/Club") +
+#      annotate('text', 1.75 / 2, 1, label = "Rock/Metal") +
+#      annotate('text', 1.75 / 2, 0, label = "Lyrical Rap") +
+#      annotate('text', 0.25 / 2, 0, label = "Smooth Instrument-Based") +
+#      labs(x= "acousticness", y= "danceability") +
+#      ggtitle("Music Genre") +
+#      theme_light() + 
+#      theme(plot.title = element_text(face = "bold", size = 25, hjust = 0.5))
+#  })
+#  
+#  output$speechiness_vs_danceability <- renderText({
+#    temp1 <- top_artist_sentiment_data()
+#    temp <- cbind(temp1$acousticness, temp1$danceability) 
+#    if(mean(temp[,1], na.rm = TRUE) < 0.500 & mean(temp[,2], na.rm = TRUE) < 0.500) {
+#      "You seem to enjoy more singing-type music such as jazz or classical, not upbeat"
+#   } else if (mean(temp[,1], na.rm = TRUE) > 0.500 & mean(temp[,2], na.rm = TRUE) < 0.500) {
+#      "You seem to enjoy faster, more wordy music such as rap music or spoken word music with minimal instruments"
+#    } else if (mean(temp[,1], na.rm = TRUE) < 0.500 & mean(temp[,2], na.rm = TRUE) > 0.500) {
+#      "You seem to enjoy music you can vibe to, with an upbeat temp and more singing"
+#    } else {
+#      "You seem to enjoy faster-paced Rap music or very lyrical rock music"
+#    }
+#  })
+#  
+
   # output$energy_plot_output <- renderPlot({ 
   #     data <- sentiment_data() %>% arrange(desc(energy))
   #     ggplot(data = data, aes(x = energy, y = fct_rev(album_name), fill = stat(x))) + 
