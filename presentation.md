@@ -99,7 +99,7 @@ This panel also shows the song with the highest score based on the features chos
 
 *User's overall sentiment*:
 
-This panel will allow the user to see the their music personality by comparing the score of specific features : 
+This panel will allow the user to see their music personality according to the user's top 10 most popular artist. The user's music personality will be determined by comparing the score of specific features :
 
 - Positivity vs Energy
 - Speechness vs Danceability
