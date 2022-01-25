@@ -54,8 +54,8 @@ sentiment_datatable <- function(artist_name) {
 }
 
 
-Sys.setenv(SPOTIFY_CLIENT_ID = "a9ddd67c426941c78b7744913d619b05")
-Sys.setenv(SPOTIFY_CLIENT_SECRET = "42e668de12ca4b1abd81cee80f060846")
+Sys.setenv(SPOTIFY_CLIENT_ID = "40c37c23d9814393b4a626c54f421724")
+Sys.setenv(SPOTIFY_CLIENT_SECRET = "c4050c7854f34ae1bff2a8136f39c9ab")
 
 access_token <- get_spotify_access_token()
 
