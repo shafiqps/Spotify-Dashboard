@@ -77,7 +77,6 @@ Project Introduction
 # **Aim of the project** :
 # Create a platform for the user to :
 - Analyze their music sentiment
-- Identify their top artist based on popularity
 - Analyze the sentiment of each artist
 
 ***
@@ -140,10 +139,9 @@ This panel will allow the user to see their music personality according to the u
 
 Experience using this app
 ========================================================
-# The app fully utilise and analyses the users spotify history accurately and was able to predict the type of music the user likes.
-# Since the Spotify package for R (spotifyr) is not capable of user logins, thus the user needs to use the actual Spotify API to be able to see their data (the client id and client secret). 
-# The overall experience of completing this data science project was fun and challenging. However, during the making of this app, we faced some problems, which we were able to solve in some way. Overall, we planned the program and divided the tasks for the project quite well, so we managed to finish it on time.
-
+# The app fully utilises and analyses the users Spotify history accurately and was able to give insights to the type of music the user likes.
+# Since the Spotify package for R (Spotifyr) is not capable of user logins, the user needs to use Spotify API to be able to see their data. But a problem arises because the authentification process can be lengthy and sometimes an “Invalid Client” error will come up. Although we couldn’t solve this indefinitely, but we found out if we keep trying the authentification will proceed eventually. 
+# The overall experience of completing this data science project was fun and challenging. The problems that we faced are not critical and can be taken care of easily. Overall, we planned the program and divided the tasks for the project quite well, so we managed to finish it on time.
 Here is the link to our project:
 - [Github Link](https://github.com/shafiqps/Spotify-Dashboard.git)
 - [Spotify Music Sentiment Analyzer Link](http://127.0.0.1:3633)
