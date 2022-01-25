@@ -1,6 +1,5 @@
 Spotify Music Sentiment Analyzer
 ======================================================== 
-autosize: true
 WIA1007 Intro to Data Science ( Group P )
 #### The ListenR’s
 
@@ -11,6 +10,12 @@ Group Members:
 - Nurhan Nufa'il Bin Azman (U2000483)
 - Muhammad Tareq Adam Bin Ellias (U2001228)
 - Masyitah  Binti Mohd Hafidz (U2000518)
+
+***
+
+![Rstudio](RStudio.png)
+
+![Spotify](Spotify.png)
 
 <style>
 
@@ -74,6 +79,7 @@ Project Introduction
 - Identify their top artist based on popularity
 - Analyze the sentiment of each artist
 
+***
 
 # **Questions** :
 
@@ -105,29 +111,29 @@ Dataset Description
 
 App Description
 ========================================================
-left: 50%
+left: 40%
 </style>
 
-- The app starts with an empty input. To start this app, users are required to input the Client ID and Client Secret by following the instructions given in the "Instruction" tab.
-- The app consist of two tab  : __Instruction__ & __Sentiment Analysis__
+The app starts with an empty input. To start this app, users are required to input the Client ID and Client Secret by following the instructions given in the "Instruction" tab.
+The app consist of two tab  : __Instruction__ & __Sentiment Analysis__
 
 **Instruction** :  This panel will list out the steps and the link needed for the users to get the Client ID and Client Secret that are required to start the program. It also lists out descriptions for each sentiment type.
-
-![Instruction](Instruction.png)
   
 **Sentiment Analysis** : This panel will display two parts : *Sentiment for Specific Artist* & *User's overall sentiment*
 
 *Sentiment for specific artist* :
 
 This panel will allow the user to see the sentiments of their top 25 artists' albums. The sentiments are based on the audio features set by Spotify. This panel also shows the song with the highest score based on the features chosen by the user.
+
 ***
-![Sentiment for Specific Artist](specific artist.jpeg)
 
 *User's overall sentiment*:
 
 This panel will allow the user to see their music personality according to the user's top 10 most popular artists. The user's music personality will be determined by comparing the score of specific features :
 - Positivity vs Energy
 
+![Instruction](Instruction.png)
+![Sentiment for Specific Artist](specific artist.jpeg)
 ![User's overall sentiment](Users Overall Sentiment.jpeg)
 ![overall sentiment](Users Overall Sentiment 2.jpeg)
 
