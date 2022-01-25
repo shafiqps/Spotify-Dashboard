@@ -62,42 +62,6 @@ sentiment_datatable <- function(artist_name) {
   datatable(audio_features_fav_artist(artist_name)) %>% formatStyle(c('artist_name', 'track_name', 'album_name', 'danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'positivity', 'tempo') ,color = 'black')
 }
 
-# ## favorite tracks table function
-# fav_tracks <- function() {
-#     ceiling(get_my_top_artists_or_tracks(type = 'tracks', include_meta_info = TRUE)[['total']] / 50) %>%
-#         seq() %>%
-#         map(function(x) {
-#             get_my_top_artists_or_tracks(type = 'tracks', limit = 50, offset = (x - 1) * 50)
-#         }) %>% reduce(rbind)
-# }
-
-## favorite artists join from previous function
-# fav_tracks_artists <- function(prev) {
-#     temp <-
-#     prev %>%
-#         select(artists) %>%
-#         reduce(rbind) %>%
-#         reduce(rbind) %>%
-#         select(name)
-#     
-#     temp <-
-#     temp %>%
-#         select(name, album.name, popularity)
-#     
-#     prev <- temp %>%
-#         full_join(prev, by = 'id') # %>%
-#        # count(id, sort = TRUE) %>%
-#        # unique() %>%
-#        # select(-id) %>%
-#        # top_n(20, n)
-#     
-#     prev <- prev %>%
-#         full_join(temp, by = 'id') %>%
-#         select(name, name.x, album.name.y, popularity.y)
-#     
-#     return(prev)
-# }
-
 
 
 Sys.setenv(SPOTIFY_CLIENT_ID = "a9ddd67c426941c78b7744913d619b05")
@@ -125,22 +89,9 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                       navbarPage(
                         #theme = "cerulean",  # <--- To use a theme, uncomment this
                         "by the ListenRs",
-                        # Navbar 2, tabPanel
-                        #tabPanel("Popularity",
-                        #         mainPanel(
-                        #           h4("Let's see how popular your favorite artists are on spotify"),
-                        #           plotOutput(outputId = "popularity_plot_output"),
-                        #           h4("We can also see how they compare to eachother, in terms of amount of followers"),
-                        #           plotlyOutput(outputId = "follower_plot_output"),
-                        #           br(), br(), br(), br(), br(), br(), br(), br(), 
-                        #           h4("Some more insight on your top artists:"),
-                        #           DT::dataTableOutput("favorite_artists_table"),
-                        #           br(), br()
-                        # DT::dataTableOutput("favorite_tracks_table"),
-                        #         ), # mainPanel
                         
                         
-                        #), # Navbar 3, tabPanel
+                        #), # Navbar 1, tabPanel
                         tabPanel( "Sentiment Analysis",
                                   tabsetPanel(
                                     # tabset1 in Sentiment Analyzer
@@ -165,28 +116,14 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                                                 padding-top: 25px;
                                                 padding-bottom: 10px}"),
                                                textOutput("energy_vs_positivity")
-                                   #           h3("Speechiness vs Danceability"),
-                                   #            plotOutput("speechiness_vs_danceability_plot_output"),
-                                   #            tags$style("#speechiness_vs_danceability
-                                   # {font-size: 40px;
-                                   # color: Green;
-                                   # display: block;
-                                   # text-align: center;
-                                   # padding-top: 25px;
-                                   # padding-bottom: 10px}"), 
-                                   #            textOutput("speechiness_vs_danceability"),
-                                               
+                               
                                                
                                              ) 
                                     ),# End of "User's Overall Sentiment" tab
                                    tabPanel(
                                      "Sentiment for specific artist",
-                                     # absolutePanel(
-                                     #     selectInput("artist_name", "Choose one of your top artists: ", fav_artists()$name)
-                                     # ), # sidebarPanel
                                      mainPanel(
-                                       #("artist_name", "Choose one of your top artists: ", fav_artists()$name),
-                                       #selectInput("sentiment_type", "Choose one sentiment type: ", c('Danceability', 'Energy', 'Loudness', 'Speechiness', 'Acousticness', 'Liveness', 'Positivity', 'Tempo')),
+                                    
                                        
                                          selectInput("artist_name", "Choose one of your top artists: ", fav_artists()$name),
                                          selectInput("sentiment_type", "Choose one sentiment type: ", c('danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo')),
@@ -220,13 +157,7 @@ shinyUI(fluidPage(theme = shinytheme("superhero"),
                                          textOutput("least_sentiment"),
                                          
                                          
-                                         # h3("Positivity (Valence)"),
-                                         # plotOutput(outputId = "valence_plot_output"),
-                                         # h5("The most positive song by this artist is:"),
-                                         # textOutput("most_positive"),
-                                         # h5("The least positive song by this artist is:"),
-                                         # textOutput("least_positive"),
-                                         # DT::dataTableOutput("sentiment_table"),
+                                       
                                          
                                          br(), br()
                                          
