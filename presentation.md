@@ -1,15 +1,16 @@
 Spotify Music Sentiment Analyzer
-======================================================== 
+========================================================
+left: 50%
 WIA1007 Intro to Data Science ( Group P )
 #### The ListenR’s
 
 27 January 2022
 
 Group Members: 
-- Muhammad Shafiq Aiman Bin Nu Mahamad @ Marzuki (U2000428) 
-- Nurhan Nufa'il Bin Azman (U2000483)
-- Muhammad Tareq Adam Bin Ellias (U2001228)
-- Masyitah  Binti Mohd Hafidz (U2000518)
+- Muhammad Shafiq Aiman (U2000428) 
+- Nurhan Nufa'il (U2000483)
+- Muhammad Tareq Adam (U2001228)
+- Masyitah Humaira (U2000518)
 
 ***
 
