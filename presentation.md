@@ -62,7 +62,7 @@ body {
 }
 
 .reveal section img {
-   width: 45%;
+   width: 48%;
 }
 
 
@@ -70,13 +70,14 @@ body {
 
 Project Introduction
 ========================================================
+</style>
 # This presentation reports the Shiny Application and Reproducible Pitch Group Project of the __Intro to Data Science Course WIA1007__
 
-# The Shiny app is built entirely in R, and the analyzation are made based on the user's activity from the Spotify.
+# The Shiny app is built entirely in R, and the analysis is made based on the artist inputted by the user.
 
 # **Aim of the project** :
 # Create a platform for the user to :
-- Analyze their music sentiment
+- Analyze their personality
 - Analyze the sentiment of each artist
 
 ***
@@ -97,52 +98,55 @@ Dataset Description
 </style>
 - The Spotify API is used to retrieve data.
 - Data is processed by extracting only the relevant features.
-- We visualize our data using multiple charts (some of them is interactive).
-- We do not use any specific dataset, we extract user-specific data from their API client and use that data. In other words, our dataset will be different for each user that uses our app.
+- We visualize our data using a chart (the chart is interactive).
+- We extract data from Spotify API and use that data.
 - The data that we extract:
-	- users' top artists, tracks, albums
-	- the top artists sentiment type and their scores.
-	( Positivity/valence, Energy, Loudness, Speechiness, Danceability, Acousticness, Liveness, Tempo )
+	- Artists, tracks, albums
+	- The artists' sentiment type and their scores ( Positivity/Valence, Energy )
+	- The artists' image and track audio
 
+# **Data Acquisition**
+
+# We searched for datasets online and found the best dataset for our project from the Spotify API.
 
 # **Data Analysis**
 
-# We selected 10 most popular artist from all the artist based on their Spotify IDs to analyze the user's music sentiment.
+# We analyse the user's personality through their selected artist, which is determined by the sentiment of each song by the artist.
 
 App Description
 ========================================================
-left: 40%
+left: 35%
 </style>
 
-The app starts with an empty input. To start this app, users are required to input the Client ID and Client Secret by following the instructions given in the "Instruction" tab.
-The app consist of two tab  : __Instruction__ & __Sentiment Analysis__
+The app starts with an empty input. To start this app, users are required to input the artist's name.
 
-**Instruction** :  This panel will list out the steps and the link needed for the users to get the Client ID and Client Secret that are required to start the program. It also lists out descriptions for each sentiment type.
+The app consist of two panel  : __About__ & __Sentiment Analysis__
+
+**About** :  This panel will show a little description about the project.
   
-**Sentiment Analysis** : This panel will display two parts : *Sentiment for Specific Artist* & *User's overall sentiment*
+**Sentiment Analysis** : This panel will display three parts : *Input* , *Plot* & *User's overall sentiment*
 
-*Sentiment for specific artist* :
+*Input* : This is for the user to input the artist's name that matches on Spotify. The user can also choose if they want to play the song preview on hover.
 
-This panel will allow the user to see the sentiments of their top 25 artists' albums. The sentiments are based on the audio features set by Spotify. This panel also shows the song with the highest score based on the features chosen by the user.
+*Plot* : This panel will allow the user to see the sentiment of each song for the specific artist. The sentiment is based on the audio features set by Spotify. This panel will also list out the album of the songs displayed. 
 
 ***
 
+
 *User's overall sentiment*:
 
-This panel will allow the user to see their music personality according to the user's top 10 most popular artists. The user's music personality will be determined by comparing the score of specific features :
-- Positivity vs Energy
+This panel will display the artist's image based on the display picture on the artist's Spotify page. Then the program will display the user's music sentiments or music personality by comparing the score of the specific features for each of the artist's songs ( Positivity/Valence vs Energy )
 
-![Instruction](Instruction.png)
-![Sentiment for Specific Artist](specific artist.jpeg)
-![User's overall sentiment](Users Overall Sentiment.jpeg)
-![overall sentiment](Users Overall Sentiment 2.jpeg)
+![About](about.png)
+![output](output.png)
+![song preview](songpreview.png)
 
 Experience using this app
 ========================================================
-# The app fully utilises and analyses the users Spotify history accurately and was able to give insights to the type of music the user likes.
-# Since the Spotify package for R (Spotifyr) is not capable of user logins, the user needs to use Spotify API to be able to see their data. But a problem arises because the authentification process can be lengthy and sometimes an “Invalid Client” error will come up. Although we couldn’t solve this indefinitely, but we found out if we keep trying the authentification will proceed eventually. 
-# The overall experience of completing this data science project was fun and challenging. The problems that we faced are not critical and can be taken care of easily. Overall, we planned the program and divided the tasks for the project quite well, so we managed to finish it on time.
-Here is the link to our project:
+# The app fully utilises and analyses the user's selected artist's music sentiment accurately and was able to give insights into the type of personality of the user.
+# The overall experience of completing this data science project was fun and challenging. Although some problems arise (which are explained in the __About__ panel) right when we have already finished the app, we are able to properly take care of them. Overall, we planned the program and divided the tasks for the project quite well, so we managed to finish it on time.
+
+**Here is the link to our project:**
 - [Github Link](https://github.com/shafiqps/Spotify-Dashboard.git)
 - [Spotify Music Sentiment Analyzer Link](https://shfqaimann.shinyapps.io/spotifysentimentanalyzr/)
 
