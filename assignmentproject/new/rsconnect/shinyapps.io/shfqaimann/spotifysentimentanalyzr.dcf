@@ -1,0 +1,13 @@
+name: spotifysentimentanalyzr
+title: spotifysentimentanalyzr
+username:
+account: shfqaimann
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5513379
+bundleId: 5508888
+url: https://shfqaimann.shinyapps.io/spotifysentimentanalyzr/
+when: 1643176730.40615
+lastSyncTime: 1643176730.40615
+asMultiple: FALSE
+asStatic: FALSE
