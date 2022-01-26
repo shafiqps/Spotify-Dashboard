@@ -144,7 +144,7 @@ Experience using this app
 # The overall experience of completing this data science project was fun and challenging. The problems that we faced are not critical and can be taken care of easily. Overall, we planned the program and divided the tasks for the project quite well, so we managed to finish it on time.
 Here is the link to our project:
 - [Github Link](https://github.com/shafiqps/Spotify-Dashboard.git)
-- [Spotify Music Sentiment Analyzer Link](http://127.0.0.1:3633)
+- [Spotify Music Sentiment Analyzer Link](https://shfqaimann.shinyapps.io/spotifysentimentanalyzr/)
 
 ## Thank you for your time.
 
