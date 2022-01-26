@@ -18,7 +18,7 @@ rm(list = ls())
 source('helpers.R')
 
 jscode <-
-    '$(document).on("shiny:connected", function(e) {
+  '$(document).on("shiny:connected", function(e) {
   var jsWidth = screen.width;
   Shiny.onInputChange("GetScreenWidth",jsWidth);
 });
@@ -26,21 +26,21 @@ jscode <-
 base_url <- 'https://api.spotify.com/v1/'
 
 neon_colors <- c(
-    '#84DE02'
-    , '#FF4466'
-    , '#4BC7CF'
-    , '#FF85CF'
-    , '#FFDF46'
-    , '#391285'
-    , '#E88E5A'
-    , '#DDE26A'
-    , '#C53151'
-    , '#B05C52'
-    , '#FD5240'
-    , '#FF4681'
-    , '#FF6D3A'
-    , '#FF404C'
-    , '#A0E6FF'
+  '#84DE02'
+  , '#4cb88f'
+  , '#9fe8c2'
+  , '#223a4c'
+  , '#90d2d8'
+  , '#b7e0dc'
+  , '#c2f2d0'
+  , '#abe9b8'
+  , '#ffecb8'
+  , '#008917'
+  , '#462c87'
+  , '#bec69e'
+  , '#b2e6ae'
+  , '#94e88d'
+  , '#cbedfb'
 )
 
 pca_vars <- c('danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo', 'duration_ms')
