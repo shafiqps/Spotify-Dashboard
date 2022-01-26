@@ -64,6 +64,9 @@ function(request) {
                         we were forced to scrape our original idea and make a new app. Now instead of it being 
                         user based (with log in feature), We analyze it based on the artist that the user choose.", style = "font-family: 'times'; font-size: 16pt"),
                   br(),br(),
+                  h5("To use our app"),
+                  p("Simply type in the artist's name that you are curious to know about in the text input box and choose your artist from the dropdown selector.
+                    Click the \"SEE THIS ARTIST\'S SENTIMENT\" button and wait for your chart to appear. Generating the chart could take a while so please be patient... Enjoy!", style = "font-family: 'times'; font-size: 16pt"),
                   HTML(paste("Credit to team members: ","Muhammad Shafiq Aiman Bin Nu Mahamad @ Marzuki (U2000428), Muhammad Tareq Adam bin Ellias (U2001228), Masyitah Humaira Binti Mohd Hafidz (U2000518), Nurhan Nufa'il bin Azman (U2000483)",sep="<br/>")),
                   br(),br(),br(),br(),br(),br()
                 )
