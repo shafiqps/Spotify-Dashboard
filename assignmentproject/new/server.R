@@ -1,8 +1,8 @@
 shinyServer(function(input, output, session) {
   
   spotify_access_token <- reactive({
-    Sys.setenv(SPOTIFY_CLIENT_ID = "2e89d8694949409fa434782aa42c2bf0")
-    Sys.setenv(SPOTIFY_CLIENT_SECRET = "1c8d2c1aa00144bca1e21741732409c6")
+    Sys.setenv(SPOTIFY_CLIENT_ID = "spotifyid")
+    Sys.setenv(SPOTIFY_CLIENT_SECRET = "spotifysec")
     get_spotify_access_token()
   })
   
